@@ -1,5 +1,0 @@
-Test: CheckMisa
-Target: verilator_target
-Waiting for OpenOCD to start up...
--------------------------------[ End of logs ]--------------------------------
-Time elapsed: 14.94s
