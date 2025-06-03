@@ -319,14 +319,15 @@ class Openocd:
 
         # This command needs to come before any config scripts on the command
         # line, since they are executed in order.
-        cmd += [
-            # Tell OpenOCD to bind gdb to an unused, ephemeral port.
-            "--command", "gdb_port 0",
-            # We create a socket for OpenOCD command line (TCL-RPC)
-            "--command", "tcl_port 0",
-            # don't use telnet
-            "--command", "telnet_port disabled",
-        ]
+        # cmd += [
+        #     # Tell OpenOCD to bind gdb to an unused, ephemeral port.
+        #     "--command", "gdb_port 0",
+        #     # We create a socket for OpenOCD command line (TCL-RPC)
+        #     "--command", "tcl_port 0",
+        #     # don't use telnet
+        #     "--command", "telnet_port disabled",
+        #     #"--command", "init"
+        # ]
 
         if config:
             self.config_file = find_file(config)
@@ -335,6 +336,8 @@ class Openocd:
                 sys.exit(1)
 
             cmd += ["-f", self.config_file]
+
+       # cmd += ["-c", "echo \"Ready\""]    
 
         if debug:
             cmd.append("-d")
@@ -383,6 +386,8 @@ class Openocd:
             "capture { echo \"Hello TCL-RPC!\" }").decode()
         if not "Hello TCL-RPC!" in hello_string:
             raise RuntimeError(f"TCL-RPC - unexpected reply:\n{hello_string}")
+        
+        self.lognames = [Openocd.logname] 
 
     def start(self, cmd, logfile, extra_env):
         combined_env = {**os.environ, **extra_env}
@@ -417,6 +422,7 @@ class Openocd:
                 # All configuration files used in testing include a call to
                 # `init`
                 if self.tclrpc_port and (len(self.gdb_ports) > 0):
+                # if len(self.gdb_ports) > 0:
                     break
 
             if self.debug_openocd:

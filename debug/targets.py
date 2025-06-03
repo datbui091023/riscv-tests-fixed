@@ -226,7 +226,8 @@ class Target:
                     march += letter
             if hart.extensionSupported("v") and self.compiler_supports_v:
                 march += "v"
-            args.append(f"-march={march}_zicsr")
+            #args.append(f"-march={march}_zicsr")
+            args.append(f"-march={march}")          
             if hart.xlen == 32:
                 args.append("-mabi=ilp32")
             else:

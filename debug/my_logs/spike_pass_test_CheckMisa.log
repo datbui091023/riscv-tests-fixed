@@ -1,0 +1,110 @@
+Test: CheckMisa
+Target: spike64
+---------------------------------[ Compile ]----------------------------------
++ riscv64-unknown-elf-gcc -g programs/checksum.c programs/tiny-malloc.c programs/infinite_loop.S -DDEFINE_MALLOC -DDEFINE_FREE -DCLINT=33554432 programs/entry.S programs/init.c -DNHARTS=1 -I ../env -T targets/RISC-V/spike64.lds -nostartfiles -mcmodel=medany -DXLEN=64 -o spike64_checksum-8000000000141105 -march=rv64imac -mabi=lp64
+-------------------------[ /tmp/spike-t1yru9bu.log ]--------------------------
++ spike -p1 --isa RV64IMAC --dm-auth --dm-progsize 2 --dm-sba 64 --dm-abstract-rti 30 -m0x1212340000:0x10000000 --rbb-port 0 spike64_checksum-8000000000141105
+Listening for remote bitbang connection on port 37543.
+warning: tohost and fromhost symbols not in ELF; can't communicate with target
+Received nothing. Quitting.
+
+-------------------------[ /tmp/openocdd088ewo_.log ]-------------------------
++ REMOTE_BITBANG_HOST=localhost REMOTE_BITBANG_PORT=37543 WORK_AREA=0x1212340000 USE_FREERTOS=0 openocd --command 'gdb_port 0' --command 'tcl_port 0' --command 'telnet_port disabled' -f targets/RISC-V/spike-1.cfg
+Open On-Chip Debugger 0.12.0+dev-01897-gf5dd564a7 (2025-03-11-08:50)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : auto-selecting first available session transport "jtag". To override use 'transport select <transport>'.
+DEPRECATED! use 'gdb report_data_abort', not 'gdb_report_data_abort'
+DEPRECATED! use 'gdb report_register_access_error', not 'gdb_report_register_access_error'
+Info : Initializing remote_bitbang driver
+Info : Connecting to localhost:37543
+Info : remote_bitbang driver initialized
+Info : Note: The adapter "remote_bitbang" doesn't support configurable speed
+Info : JTAG tap: riscv.cpu tap/device found: 0xdeadbeef (mfg: 0x777 (Fabric of Truth Inc), part: 0xeadb, ver: 0xd)
+Error: Debugger is not authenticated to target Debug Module. (dmstatus=0x4c0c02). Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
+Info : [riscv.cpu] Examination succeed
+Info : [riscv.cpu] starting gdb server on 0
+Info : Listening on port 45699 for gdb connections
+Info : authdata_write resulted in successful authentication
+Info : datacount=2 progbufsize=2
+Info : Examined RISC-V core; found 1 harts
+Info :  hart 0: XLEN=64, misa=0x8000000000141105
+semihosting is enabled
+Info : Listening on port 37523 for tcl connections
+Info : telnet server disabled
+Info : accepting 'tcl' connection on tcp/0
+Hello TCL-RPC!
+Hello TCL-RPC!
+
+Info : accepting 'gdb' connection on tcp/0
+Info : dropped 'gdb' connection
+shutdown command invoked
+Info : remote_bitbang interface quit
+
+-----------------------[ /tmp/gdb@45699-bexiw1z5.log ]------------------------
++ riscv64-unknown-elf-gdb
+[35;1mGNU gdb (crosstool-NG 1.26.0_rc1) 13.2[m
+Copyright (C) 2023 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <[32mhttp://gnu.org/licenses/gpl.html[m>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "--host=x86_64-build_pc-linux-gnu --target=riscv64-unknown-elf".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+[32m<toolchains@lowrisc.org>[m.
+Find the GDB manual and other documentation resources online at:
+    <[32mhttp://www.gnu.org/software/gdb/documentation/[m>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word".
+[?2004h(gdb) set style enabled off
+set style enabled off
+[?2004l
+[?2004h(gdb) set confirm off
+set confirm off
+[?2004l
+[?2004h(gdb) set width 0
+set width 0
+[?2004l
+[?2004h(gdb) set height 0
+set height 0
+[?2004l
+[?2004h(gdb) set print entry-values no
+set print entry-values no
+[?2004l
+[?2004h(gdb) set remotetimeout 180
+set remotetimeout 180
+[?2004l
+[?2004h(gdb) target extended-remote localhost:45699
+target extended-remote localhost:45699
+[?2004l
+Remote debugging using localhost:45699
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x00000012123406b2 in ?? ()
+[?2004h(gdb) monitor riscv reset_delays 127
+monitor riscv reset_delays 127
+[?2004l
+[?2004h(gdb) info threads
+info threads
+[?2004l
+  Id   Target Id         Frame 
+* 1    Remote target     0x00000012123406b2 in ?? ()
+[?2004h(gdb) monitor riscv reset_delays 181
+monitor riscv reset_delays 181
+[?2004l
+[?2004h(gdb) p/x $misa
+p/x $misa
+[?2004l
+$1 = 0x8000000000141105
+[?2004h(gdb) 
+-------------------------------[ End of logs ]--------------------------------
+Result: pass
+Logfile: logs/20250529-143632-spike64-CheckMisa.log
+Reproduce: ./gdbserver.py targets/RISC-V/spike64.py CheckMisa
+Time elapsed: 1.14s

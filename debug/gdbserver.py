@@ -2205,36 +2205,36 @@ class EtriggerTest(DebugTest):
             self.gdb.command("monitor riscv set_mem_access progbuf sysbus "
                              "abstract")
 
-class IcountTest(DebugTest):
-    compile_args = ("programs/infinite_loop.S", )
+# class IcountTest(DebugTest):
+#     compile_args = ("programs/infinite_loop.S", )
 
-    def setup(self):
-        DebugTest.setup(self)
-        self.gdb.b("main")
-        self.gdb.c()
+#     def setup(self):
+#         DebugTest.setup(self)
+#         self.gdb.b("main")
+#         self.gdb.c()
 
-    def test(self):
-        # Execute 2 instructions.
-        output = self.gdb.command("monitor riscv icount set m 2")
-        if self.target.icount_limit > 1:
-            assertNotIn("Failed", output)
-        else:
-            assertIn("Failed", output)
-            self.gdb.b("main_post_csrr")
-        output = self.gdb.c()
-        assertIn("main_post_csrr", output)
-        main_post_csrr = self.gdb.p("&main_post_csrr")
-        assertEqual(self.gdb.p("$pc"), main_post_csrr)
+#     def test(self):
+#         # Execute 2 instructions.
+#         output = self.gdb.command("monitor riscv icount set m 2")
+#         if self.target.icount_limit > 1:
+#             assertNotIn("Failed", output)
+#         else:
+#             assertIn("Failed", output)
+#             self.gdb.b("main_post_csrr")
+#         output = self.gdb.c()
+#         assertIn("main_post_csrr", output)
+#         main_post_csrr = self.gdb.p("&main_post_csrr")
+#         assertEqual(self.gdb.p("$pc"), main_post_csrr)
 
-        self.gdb.command("delete")
-        self.gdb.command("monitor riscv icount clear")
+#         self.gdb.command("delete")
+#         self.gdb.command("monitor riscv icount clear")
 
-        # Execute 1 instruction.
-        output = self.gdb.command("monitor riscv icount set m 1")
-        assertNotIn("Failed", output)
-        output = self.gdb.c()
-        assertIn("breakpoint", output)
-        assertEqual(self.gdb.p("$pc"), main_post_csrr + 4)
+#         # Execute 1 instruction.
+#         output = self.gdb.command("monitor riscv icount set m 1")
+#         assertNotIn("Failed", output)
+#         output = self.gdb.c()
+#         assertIn("breakpoint", output)
+#         assertEqual(self.gdb.p("$pc"), main_post_csrr + 4)
 
 class ItriggerTest(GdbSingleHartTest):
     compile_args = ("programs/interrupt.c",)

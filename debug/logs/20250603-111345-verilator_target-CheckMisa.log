@@ -1,0 +1,286 @@
+Test: CheckMisa
+Target: verilator_target
+Waiting for OpenOCD to start up...
+-------------------------[ /tmp/openocdddrhrnu2.log ]-------------------------
++  USE_FREERTOS=0 openocd -f targets/RISC-V/dm_debug.cfg --command 'gdb_port 0' --command 'tcl_port 0' --command 'telnet_port disabled'
+Open On-Chip Debugger 0.12.0+dev-01897-gf5dd564a7 (2025-03-11-08:50)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Debug: 3 1 command.c:153 script_debug(): command - adapter speed 10000
+Debug: 4 1 adapter.c:253 adapter_config_khz(): handle adapter khz
+Debug: 5 1 adapter.c:216 adapter_khz_to_speed(): convert khz to adapter specific speed value
+Debug: 6 1 adapter.c:216 adapter_khz_to_speed(): convert khz to adapter specific speed value
+Debug: 7 1 command.c:153 script_debug(): command - gdb port 3333
+Debug: 8 1 command.c:153 script_debug(): command - tcl port 0
+Debug: 9 1 command.c:153 script_debug(): command - telnet port disabled
+Debug: 10 1 command.c:153 script_debug(): command - adapter driver remote_bitbang
+Debug: 11 1 command.c:153 script_debug(): command - remote_bitbang host localhost
+Debug: 12 1 command.c:153 script_debug(): command - remote_bitbang port 9999
+Debug: 13 1 command.c:153 script_debug(): command - transport select
+Info : 14 1 transport.c:267 handle_transport_select(): auto-selecting first available session transport "jtag". To override use 'transport select <transport>'.
+Debug: 15 1 command.c:153 script_debug(): command - transport select
+Debug: 16 1 command.c:153 script_debug(): command - jtag newtap riscv cpu -irlen 5 -expected-id 0x249511C3
+Debug: 17 1 tcl.c:404 handle_jtag_newtap_args(): Creating New Tap, Chip: riscv, Tap: cpu, Dotted: riscv.cpu, 4 params
+Debug: 18 1 core.c:1488 jtag_tap_init(): Created Tap: riscv.cpu @ abs position 0, irlen 5, capture: 0x1 mask: 0x3
+Debug: 19 1 command.c:153 script_debug(): command - jtag names
+Debug: 20 1 command.c:153 script_debug(): command - target create riscv.cpu riscv -chain-position riscv.cpu
+Debug: 21 1 target.c:2131 target_free_all_working_areas_restore(): freeing all working areas
+Debug: 22 1 riscv.c:432 riscv_create_target(): riscv_create_target()
+Debug: 23 2 command.c:153 script_debug(): command - riscv set_reset_timeout_sec 2000
+Debug: 24 2 command.c:153 script_debug(): command - riscv set_command_timeout_sec 2000
+Debug: 25 2 command.c:153 script_debug(): command - riscv set_mem_access sysbus
+Debug: 26 2 command.c:153 script_debug(): command - scan_chain
+Debug: 27 2 command.c:153 script_debug(): command - init
+Debug: 28 2 command.c:153 script_debug(): command - target init
+Debug: 29 2 command.c:153 script_debug(): command - target names
+Debug: 30 2 command.c:153 script_debug(): command - riscv.cpu cget -event gdb-flash-erase-start
+Debug: 31 2 command.c:153 script_debug(): command - riscv.cpu configure -event gdb-flash-erase-start reset init
+Debug: 32 2 command.c:153 script_debug(): command - riscv.cpu cget -event gdb-flash-write-end
+Debug: 33 2 command.c:153 script_debug(): command - riscv.cpu configure -event gdb-flash-write-end reset halt
+Debug: 34 2 command.c:153 script_debug(): command - riscv.cpu cget -event gdb-attach
+Debug: 35 2 command.c:153 script_debug(): command - riscv.cpu configure -event gdb-attach halt 1000
+Debug: 36 2 target.c:1589 handle_target_init_command(): Initializing targets...
+Debug: 37 2 riscv.c:445 riscv_init_target(): riscv_init_target()
+Debug: 38 2 semihosting_common.c:109 semihosting_common_init():  
+Info : 39 2 remote_bitbang.c:378 remote_bitbang_init(): Initializing remote_bitbang driver
+Info : 40 2 remote_bitbang.c:300 remote_bitbang_init_tcp(): Connecting to localhost:9999
+Info : 41 2 remote_bitbang.c:389 remote_bitbang_init(): remote_bitbang driver initialized
+Info : 42 2 adapter.c:157 adapter_init(): Note: The adapter "remote_bitbang" doesn't support configurable speed
+Debug: 43 2 openocd.c:133 handle_init_command(): Debug Adapter init complete
+Debug: 44 2 command.c:153 script_debug(): command - transport init
+Debug: 45 2 transport.c:219 handle_transport_init(): handle_transport_init
+Debug: 46 2 core.c:843 jtag_add_reset(): SRST line released
+Debug: 47 2 core.c:868 jtag_add_reset(): TRST line released
+Debug: 48 2 core.c:334 jtag_call_event_callbacks(): jtag event: TAP reset
+Debug: 49 2 command.c:153 script_debug(): command - jtag arp_init
+Debug: 50 2 core.c:1522 jtag_init_inner(): Init JTAG chain
+Debug: 51 2 core.c:334 jtag_call_event_callbacks(): jtag event: TAP reset
+Debug: 52 2 core.c:1248 jtag_examine_chain(): DR scan interrogation for IDCODE/BYPASS
+Debug: 53 2 core.c:334 jtag_call_event_callbacks(): jtag event: TAP reset
+Info : 54 97 core.c:1146 jtag_examine_chain_display(): JTAG tap: riscv.cpu tap/device found: 0x249511c3 (mfg: 0x0e1 (Wintec Industries), part: 0x4951, ver: 0x2)
+Debug: 55 97 core.c:1378 jtag_validate_ircapture(): IR capture validation scan
+Debug: 56 138 core.c:1435 jtag_validate_ircapture(): riscv.cpu: IR capture 0x05
+Debug: 57 138 command.c:153 script_debug(): command - dap init
+Debug: 58 138 arm_dap.c:96 dap_init_all(): Initializing all DAPs ...
+Debug: 59 138 openocd.c:150 handle_init_command(): Examining targets...
+Debug: 60 138 target.c:675 target_examine_one(): [riscv.cpu] Examination started
+Debug: 61 138 target.c:1775 target_call_event_callbacks(): target event 19 (examine-start) for core riscv.cpu
+Debug: 62 138 riscv.c:1119 riscv_examine(): riscv_examine()
+Debug: 63 179 riscv.c:406 dtmcontrol_scan(): DTMCONTROL: 0x0 -> 0x1071
+Debug: 64 179 riscv.c:1129 riscv_examine(): dtmcontrol=0x1071
+Debug: 65 179 riscv.c:1131 riscv_examine():   version=0x1
+Debug: 66 179 riscv-013.c:2276 init_target(): init
+Debug: 67 220 riscv-013.c:444 dtmcontrol_scan(): DTMCS: 0x0 -> 0x1071
+Debug: 68 220 riscv-013.c:1566 examine(): dtmcontrol=0x1071
+Debug: 69 220 riscv-013.c:1567 examine():   dmireset=0
+Debug: 70 220 riscv-013.c:1568 examine():   idle=1
+Debug: 71 220 riscv-013.c:1569 examine():   dmistat=0
+Debug: 72 220 riscv-013.c:1570 examine():   abits=7
+Debug: 73 220 riscv-013.c:1571 examine():   version=1
+Debug: 74 220 riscv-013.c:250 get_dm(): [0] Allocating new DM
+Debug: 75 261 riscv-013.c:390 scan(): 41b w 00000000 @10 -> + 00000000 @00; 0i
+Debug: 76 302 riscv-013.c:390 scan(): 41b - 00000000 @10 -> + 00000000 @10; 0i
+Debug: 77 343 riscv-013.c:390 scan(): 41b w 00000001 @10 -> + 00000000 @10; 0i
+Debug: 78 343 riscv-013.c:400 scan():  dmactive -> 
+Debug: 79 384 riscv-013.c:390 scan(): 41b - 00000000 @10 -> + 00000001 @10; 0i
+Debug: 80 384 riscv-013.c:400 scan():  ->  dmactive
+Debug: 81 425 riscv-013.c:390 scan(): 41b w 07ffffc1 @10 -> + 00000000 @10; 0i
+Debug: 82 425 riscv-013.c:400 scan():  hasel hartselhi=1023 hartsello=1023 dmactive -> 
+Debug: 83 466 riscv-013.c:390 scan(): 41b - 00000000 @10 -> + 07ffffc1 @10; 0i
+Debug: 84 466 riscv-013.c:400 scan():  ->  hasel hartselhi=1023 hartsello=1023 dmactive
+Debug: 85 507 riscv-013.c:390 scan(): 41b r 00000000 @10 -> + 00000000 @10; 0i
+Debug: 86 548 riscv-013.c:390 scan(): 41b - 00000000 @10 -> b 00000000 @10; 0i
+Debug: 87 548 riscv-013.c:453 increase_dmi_busy_delay(): dtmcs_idle=1, dmi_busy_delay=1, ac_busy_delay=0
+Debug: 88 589 riscv-013.c:444 dtmcontrol_scan(): DTMCS: 0x10000 -> 0x1c71
+Debug: 89 630 riscv-013.c:390 scan(): 41b - 00000000 @10 -> + 00000001 @10; 1i
+Debug: 90 630 riscv-013.c:400 scan():  ->  dmactive
+Debug: 91 671 riscv-013.c:390 scan(): 41b r 00000000 @11 -> + 00000000 @10; 1i
+Debug: 92 712 riscv-013.c:390 scan(): 41b - 00000000 @11 -> b 00000000 @11; 1i
+Debug: 93 712 riscv-013.c:453 increase_dmi_busy_delay(): dtmcs_idle=1, dmi_busy_delay=2, ac_busy_delay=0
+Debug: 94 753 riscv-013.c:444 dtmcontrol_scan(): DTMCS: 0x10000 -> 0x1c71
+Debug: 95 794 riscv-013.c:390 scan(): 41b - 00000000 @11 -> + 000c0c82 @11; 2i
+Debug: 96 794 riscv-013.c:400 scan():  ->  allhavereset anyhavereset allrunning anyrunning authenticated version=2
+Debug: 97 794 riscv-013.c:1616 examine(): dmstatus:  0x000c0c82
+Debug: 98 794 riscv-013.c:1632 examine(): hartsellen=0
+Debug: 99 835 riscv-013.c:390 scan(): 41b r 00000000 @12 -> + 00000000 @11; 2i
+Debug: 100 876 riscv-013.c:390 scan(): 41b - 00000000 @12 -> b 00000000 @12; 2i
+Debug: 101 876 riscv-013.c:453 increase_dmi_busy_delay(): dtmcs_idle=1, dmi_busy_delay=3, ac_busy_delay=0
+Debug: 102 917 riscv-013.c:444 dtmcontrol_scan(): DTMCS: 0x10000 -> 0x1c71
+Debug: 103 958 riscv-013.c:390 scan(): 41b - 00000000 @12 -> + 00212380 @12; 3i
+Debug: 104 999 riscv-013.c:390 scan(): 41b r 00000000 @38 -> + 00000000 @12; 3i
+Debug: 105 1040 riscv-013.c:390 scan(): 41b - 00000000 @38 -> b 00000000 @38; 3i
+Debug: 106 1040 riscv-013.c:453 increase_dmi_busy_delay(): dtmcs_idle=1, dmi_busy_delay=4, ac_busy_delay=0
+Debug: 107 1081 riscv-013.c:444 dtmcontrol_scan(): DTMCS: 0x10000 -> 0x1c71
+Debug: 108 1122 riscv-013.c:390 scan(): 41b - 00000000 @38 -> + 20040407 @38; 4i
+Debug: 109 1122 riscv-013.c:400 scan():  ->  sbversion=1 sbaccess=2 sbasize=32 sbaccess32 sbaccess16 sbaccess8
+Debug: 110 1163 riscv-013.c:390 scan(): 41b r 00000000 @16 -> + 00000000 @38; 4i
+Debug: 111 1204 riscv-013.c:390 scan(): 41b - 00000000 @16 -> b 00000000 @16; 4i
+Debug: 112 1204 riscv-013.c:453 increase_dmi_busy_delay(): dtmcs_idle=1, dmi_busy_delay=5, ac_busy_delay=0
+Debug: 113 1245 riscv-013.c:444 dtmcontrol_scan(): DTMCS: 0x10000 -> 0x1c71
+Debug: 114 1286 riscv-013.c:390 scan(): 41b - 00000000 @16 -> + 08000002 @16; 5i
+Debug: 115 1286 riscv-013.c:400 scan():  ->  progbufsize=8 datacount=2
+Info : 116 1286 riscv-013.c:1663 examine(): datacount=2 progbufsize=8
+Debug: 117 1327 riscv-013.c:390 scan(): 41b r 00000000 @10 -> + 00000000 @16; 5i
+Debug: 118 1368 riscv-013.c:390 scan(): 41b - 00000000 @10 -> + 00000001 @10; 5i
+Debug: 119 1368 riscv-013.c:400 scan():  ->  dmactive
+Debug: 120 1409 riscv-013.c:390 scan(): 41b w 00000001 @10 -> + 00000000 @10; 5i
+Debug: 121 1409 riscv-013.c:400 scan():  dmactive -> 
+Debug: 122 1450 riscv-013.c:390 scan(): 41b - 00000000 @10 -> + 00000001 @10; 5i
+Debug: 123 1450 riscv-013.c:400 scan():  ->  dmactive
+Debug: 124 1491 riscv-013.c:390 scan(): 41b r 00000000 @11 -> + 00000000 @10; 5i
+Debug: 125 1532 riscv-013.c:390 scan(): 41b - 00000000 @11 -> + 000c0c82 @11; 5i
+Debug: 126 1532 riscv-013.c:400 scan():  ->  allhavereset anyhavereset allrunning anyrunning authenticated version=2
+Debug: 127 1573 riscv-013.c:390 scan(): 41b w 10000001 @10 -> + 00000000 @11; 5i
+Debug: 128 1573 riscv-013.c:400 scan():  dmactive ackhavereset -> 
+Debug: 129 1614 riscv-013.c:390 scan(): 41b - 00000000 @10 -> + 10000001 @10; 5i
+Debug: 130 1614 riscv-013.c:400 scan():  ->  dmactive ackhavereset
+Debug: 131 1614 riscv-013.c:1701 examine(): Detected 1 harts.
+Debug: 132 1655 riscv-013.c:390 scan(): 41b r 00000000 @11 -> + 00000000 @10; 5i
+Debug: 133 1696 riscv-013.c:390 scan(): 41b - 00000000 @11 -> + 00000c82 @11; 5i
+Debug: 134 1696 riscv-013.c:400 scan():  ->  allrunning anyrunning authenticated version=2
+Debug: 135 1696 riscv-013.c:4213 riscv013_halt_go(): halting hart 0
+Debug: 136 1737 riscv-013.c:390 scan(): 41b w 80000001 @10 -> + 00000000 @11; 5i
+Debug: 137 1737 riscv-013.c:400 scan(): haltreq dmactive -> 
+Debug: 138 1778 riscv-013.c:390 scan(): 41b - 00000000 @10 -> + 80000001 @10; 5i
+Debug: 139 1778 riscv-013.c:400 scan():  -> haltreq dmactive
+Debug: 140 1820 riscv-013.c:390 scan(): 41b r 00000000 @11 -> + 00000000 @10; 5i
+Debug: 141 1861 riscv-013.c:390 scan(): 41b - 00000000 @11 -> + 00000382 @11; 5i
+Debug: 142 1861 riscv-013.c:400 scan():  ->  allhalted anyhalted authenticated version=2
+Debug: 143 1902 riscv-013.c:390 scan(): 41b r 00000000 @11 -> + 00000000 @11; 5i
+Debug: 144 1943 riscv-013.c:390 scan(): 41b - 00000000 @11 -> + 00000382 @11; 5i
+Debug: 145 1943 riscv-013.c:400 scan():  ->  allhalted anyhalted authenticated version=2
+Debug: 146 1984 riscv-013.c:390 scan(): 41b w 00000001 @10 -> + 00000000 @11; 5i
+Debug: 147 1984 riscv-013.c:400 scan():  dmactive -> 
+Debug: 148 2025 riscv-013.c:390 scan(): 41b - 00000000 @10 -> + 00000001 @10; 5i
+Debug: 149 2025 riscv-013.c:400 scan():  ->  dmactive
+Debug: 150 2025 riscv-013.c:777 execute_abstract_command(): command=0x321008; access register, size=64, postexec=0, transfer=1, write=0, regno=0x1008
+Debug: 151 2066 riscv-013.c:390 scan(): 41b w 00321008 @17 -> + 00000000 @10; 5i
+Debug: 152 2107 riscv-013.c:390 scan(): 41b r 00000000 @16 -> + 00321008 @17; 5i
+Debug: 153 2148 riscv-013.c:390 scan(): 41b - 00000000 @16 -> + 08000202 @16; 5i
+Debug: 154 2148 riscv-013.c:400 scan():  ->  progbufsize=8 cmderr=2 datacount=2
+Debug: 155 2148 riscv-013.c:800 execute_abstract_command(): command 0x321008 failed; abstractcs=0x8000202
+Debug: 156 2189 riscv-013.c:390 scan(): 41b w 00000700 @16 -> + 00000000 @16; 5i
+Debug: 157 2189 riscv-013.c:400 scan():  cmderr=7 -> 
+Debug: 158 2230 riscv-013.c:390 scan(): 41b - 00000000 @16 -> + 00000700 @16; 5i
+Debug: 159 2230 riscv-013.c:400 scan():  ->  cmderr=7
+Debug: 160 2230 riscv-013.c:777 execute_abstract_command(): command=0x220301; access register, size=32, postexec=0, transfer=1, write=0, regno=0x301
+Debug: 161 2271 riscv-013.c:390 scan(): 41b w 00220301 @17 -> + 00000000 @16; 5i
+Debug: 162 2312 riscv-013.c:390 scan(): 41b r 00000000 @16 -> + 00220301 @17; 5i
+Debug: 163 2353 riscv-013.c:390 scan(): 41b - 00000000 @16 -> + 08000002 @16; 5i
+Debug: 164 2353 riscv-013.c:400 scan():  ->  progbufsize=8 datacount=2
+Debug: 165 2394 riscv-013.c:390 scan(): 41b r 00000000 @04 -> + 00000000 @16; 5i
+Debug: 166 2435 riscv-013.c:390 scan(): 41b - 00000000 @04 -> + 40001104 @04; 5i
+Debug: 167 2435 riscv-013.c:1487 register_read_direct(): {0} misa = 0x40001104
+Debug: 168 2435 riscv.c:3806 riscv_init_registers(): create register cache for 4194 registers
+Debug: 169 2435 riscv-013.c:1751 examine():  hart 0: XLEN=32, misa=0x40001104
+Debug: 170 2435 riscv-013.c:4440 riscv013_step_or_resume_current_hart(): resuming hart 0 (for step?=0)
+Debug: 171 2477 riscv-013.c:390 scan(): 41b r 00000000 @11 -> + 00000000 @04; 5i
+Debug: 172 2518 riscv-013.c:390 scan(): 41b - 00000000 @11 -> + 00000382 @11; 5i
+Debug: 173 2518 riscv-013.c:400 scan():  ->  allhalted anyhalted authenticated version=2
+Debug: 174 2559 riscv-013.c:390 scan(): 41b w 40000001 @10 -> + 00000000 @11; 5i
+Debug: 175 2559 riscv-013.c:400 scan():  resumereq dmactive -> 
+Debug: 176 2600 riscv-013.c:390 scan(): 41b - 00000000 @10 -> + 40000001 @10; 5i
+Debug: 177 2600 riscv-013.c:400 scan():  ->  resumereq dmactive
+Debug: 178 2641 riscv-013.c:390 scan(): 41b r 00000000 @11 -> + 00000000 @10; 5i
+Debug: 179 2682 riscv-013.c:390 scan(): 41b - 00000000 @11 -> + 00030c82 @11; 5i
+Debug: 180 2682 riscv-013.c:400 scan():  ->  allresumeack anyresumeack allrunning anyrunning authenticated version=2
+Debug: 181 2724 riscv-013.c:390 scan(): 41b w 00000001 @10 -> + 00000000 @11; 5i
+Debug: 182 2724 riscv-013.c:400 scan():  dmactive -> 
+Debug: 183 2765 riscv-013.c:390 scan(): 41b - 00000000 @10 -> + 00000001 @10; 5i
+Debug: 184 2765 riscv-013.c:400 scan():  ->  dmactive
+Info : 185 2765 riscv-013.c:1774 examine(): Examined RISC-V core; found 1 harts
+Info : 186 2765 riscv-013.c:1776 examine():  hart 0: XLEN=32, misa=0x40001104
+Debug: 187 2765 target.c:1775 target_call_event_callbacks(): target event 21 (examine-end) for core riscv.cpu
+Info : 188 2765 target.c:691 target_examine_one(): [riscv.cpu] Examination succeed
+Debug: 189 2765 command.c:153 script_debug(): command - flash init
+Debug: 190 2765 tcl.c:1364 handle_flash_init_command(): Initializing flash devices...
+Debug: 191 2765 command.c:153 script_debug(): command - nand init
+Debug: 192 2765 tcl.c:484 handle_nand_init_command(): Initializing NAND devices...
+Debug: 193 2765 command.c:153 script_debug(): command - pld init
+Debug: 194 2765 pld.c:337 handle_pld_init_command(): Initializing PLDs...
+Debug: 195 2765 command.c:153 script_debug(): command - tpiu init
+Info : 196 2765 gdb_server.c:3831 gdb_target_start(): [riscv.cpu] starting gdb server on 3333
+Info : 197 2765 server.c:298 add_service(): Listening on port 3333 for gdb connections
+Debug: 198 2765 command.c:153 script_debug(): command - target names
+Debug: 199 2765 command.c:153 script_debug(): command - target names
+Debug: 200 2765 command.c:153 script_debug(): command - riscv.cpu cget -type
+Debug: 201 2765 command.c:153 script_debug(): command - halt
+Debug: 202 2765 target.c:3253 handle_halt_command(): -
+Debug: 203 2765 riscv.c:1233 riscv_halt(): [0] halting all harts
+Debug: 204 2765 riscv.c:1168 halt_prep(): [riscv.cpu] prep hart, debug_reason=0
+Debug: 205 2765 riscv.c:3219 riscv_set_current_hartid(): setting hartid to 0, was 0
+Debug: 206 2807 riscv-013.c:390 scan(): 41b r 00000000 @11 -> + 00000000 @10; 5i
+Debug: 207 2848 riscv-013.c:390 scan(): 41b - 00000000 @11 -> + 00030c82 @11; 5i
+Debug: 208 2848 riscv-013.c:400 scan():  ->  allresumeack anyresumeack allrunning anyrunning authenticated version=2
+Debug: 209 2848 riscv.c:3219 riscv_set_current_hartid(): setting hartid to 0, was 0
+Debug: 210 2890 riscv-013.c:390 scan(): 41b r 00000000 @11 -> + 00000000 @11; 5i
+Debug: 211 2932 riscv-013.c:390 scan(): 41b - 00000000 @11 -> + 00030c82 @11; 5i
+Debug: 212 2932 riscv-013.c:400 scan():  ->  allresumeack anyresumeack allrunning anyrunning authenticated version=2
+Debug: 213 2932 riscv-013.c:4213 riscv013_halt_go(): halting hart 0
+Debug: 214 2973 riscv-013.c:390 scan(): 41b w 80000001 @10 -> + 00000000 @11; 5i
+Debug: 215 2973 riscv-013.c:400 scan(): haltreq dmactive -> 
+Debug: 216 3015 riscv-013.c:390 scan(): 41b - 00000000 @10 -> + 80000001 @10; 5i
+Debug: 217 3015 riscv-013.c:400 scan():  -> haltreq dmactive
+Debug: 218 3057 riscv-013.c:390 scan(): 41b r 00000000 @11 -> + 00000000 @10; 5i
+Debug: 219 3099 riscv-013.c:390 scan(): 41b - 00000000 @11 -> + 00030382 @11; 5i
+Debug: 220 3099 riscv-013.c:400 scan():  ->  allresumeack anyresumeack allhalted anyhalted authenticated version=2
+Debug: 221 3140 riscv-013.c:390 scan(): 41b r 00000000 @11 -> + 00000000 @11; 5i
+Debug: 222 3182 riscv-013.c:390 scan(): 41b - 00000000 @11 -> + 00030382 @11; 5i
+Debug: 223 3182 riscv-013.c:400 scan():  ->  allresumeack anyresumeack allhalted anyhalted authenticated version=2
+Debug: 224 3223 riscv-013.c:390 scan(): 41b w 00000001 @10 -> + 00000000 @11; 5i
+Debug: 225 3223 riscv-013.c:400 scan():  dmactive -> 
+Debug: 226 3265 riscv-013.c:390 scan(): 41b - 00000000 @10 -> + 00000001 @10; 5i
+Debug: 227 3265 riscv-013.c:400 scan():  ->  dmactive
+Debug: 228 3265 riscv.c:3229 riscv_invalidate_register_cache(): [0]
+Debug: 229 3265 target.c:1775 target_call_event_callbacks(): target event 0 (gdb-halt) for core riscv.cpu
+Debug: 230 3265 target.c:1775 target_call_event_callbacks(): target event 1 (halted) for core riscv.cpu
+Debug: 231 3265 riscv.c:2184 riscv_openocd_poll(): polling all harts
+Debug: 232 3265 riscv.c:3219 riscv_set_current_hartid(): setting hartid to 0, was 0
+Debug: 233 3265 riscv.c:2089 riscv_poll_hart(): polling hart 0, target->state=2
+Debug: 234 3306 riscv-013.c:390 scan(): 41b r 00000000 @11 -> + 00000000 @10; 5i
+Debug: 235 3348 riscv-013.c:390 scan(): 41b - 00000000 @11 -> + 00030382 @11; 5i
+Debug: 236 3348 riscv-013.c:400 scan():  ->  allresumeack anyresumeack allhalted anyhalted authenticated version=2
+Debug: 237 3348 command.c:153 script_debug(): command - echo DEPRECATED! use 'gdb port', not 'gdb_port'
+Debug: 238 3348 riscv.c:2184 riscv_openocd_poll(): polling all harts
+Debug: 239 3348 riscv.c:3219 riscv_set_current_hartid(): setting hartid to 0, was 0
+Debug: 240 3348 riscv.c:2089 riscv_poll_hart(): polling hart 0, target->state=2
+Debug: 241 3390 riscv-013.c:390 scan(): 41b r 00000000 @11 -> + 00000000 @11; 5i
+Debug: 242 3431 riscv-013.c:390 scan(): 41b - 00000000 @11 -> + 00030382 @11; 5i
+Debug: 243 3431 riscv-013.c:400 scan():  ->  allresumeack anyresumeack allhalted anyhalted authenticated version=2
+User : 244 3431 command.c:678 handle_echo(): DEPRECATED! use 'gdb port', not 'gdb_port'
+Debug: 245 3431 command.c:153 script_debug(): command - gdb port 0
+Error: 246 3431 command.c:487 command_can_run(): The 'gdb port' command must be used before 'init'.
+User : 247 3431 command.c:601 command_run_line(): Traceback (most recent call last):
+, in gdb_port
+    {gdb port} 0
+Debug: 248 3431 breakpoints.c:328 breakpoint_remove_all_internal(): [riscv.cpu] Delete all breakpoints
+Debug: 249 3431 riscv.c:491 riscv_deinit_target(): riscv_deinit_target()
+Debug: 250 3431 riscv-013.c:1521 deinit_target(): riscv_deinit_target()
+Debug: 251 3431 target.c:2131 target_free_all_working_areas_restore(): freeing all working areas
+Info : 252 3431 remote_bitbang.c:175 remote_bitbang_quit(): remote_bitbang interface quit
+TAP: riscv.cpu
+
+
+--------------------------------[ Traceback ]---------------------------------
+Traceback (most recent call last):
+  File "/home/hoangdang/Documents/git_clone/riscv-tests/debug/testlib.py", line 1388, in run
+    self.classSetup()
+  File "/home/hoangdang/Documents/git_clone/riscv-tests/debug/testlib.py", line 1444, in classSetup
+    BaseTest.classSetup(self)
+  File "/home/hoangdang/Documents/git_clone/riscv-tests/debug/testlib.py", line 1351, in classSetup
+    self.target_process = self.target.create()
+  File "/home/hoangdang/Documents/git_clone/riscv-tests/debug/targets/RISC-V/verilator_target.py", line 38, in create
+    return testlib.Openocd(server_cmd=f"openocd -f {self.openocd_config_path}")
+  File "/home/hoangdang/Documents/git_clone/riscv-tests/debug/testlib.py", line 378, in __init__
+    self.start(cmd, logfile, extra_env)
+  File "/home/hoangdang/Documents/git_clone/riscv-tests/debug/testlib.py", line 404, in start
+    m = self.expect(
+  File "/home/hoangdang/Documents/git_clone/riscv-tests/debug/testlib.py", line 490, in expect
+    raise TestLibError("OpenOCD exited early.")
+testlib.TestLibError: OpenOCD exited early.
+-------------------------------[ End of logs ]--------------------------------
+Result: exception
+Logfile: logs/20250603-111345-verilator_target-CheckMisa.log
+Reproduce: ./gdbserver.py targets/RISC-V/verilator_target.py CheckMisa
+Time elapsed: 3.51s

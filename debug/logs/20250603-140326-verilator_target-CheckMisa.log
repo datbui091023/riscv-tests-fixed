@@ -1,0 +1,18 @@
+Test: CheckMisa
+Target: verilator_target
+Waiting for OpenOCD to start up...
+Waiting for OpenOCD to start up...
+-------------------------[ /tmp/openocd441d61x0.log ]-------------------------
++  USE_FREERTOS=0 openocd -f targets/RISC-V/dm_debug.cfg
+Open On-Chip Debugger 0.12.0+dev-01897-gf5dd564a7 (2025-03-11-08:50)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : auto-selecting first available session transport "jtag". To override use 'transport select <transport>'.
+Info : Initializing remote_bitbang driver
+Info : Connecting to localhost:9999
+Info : remote_bitbang driver initialized
+Info : Note: The adapter "remote_bitbang" doesn't support configurable speed
+
+-------------------------------[ End of logs ]--------------------------------
+Time elapsed: 49.16s
