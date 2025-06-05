@@ -14,11 +14,16 @@ class verilator_hart(targets.Hart):
 
 class verilator_target(targets.Target):
     harts = [verilator_hart()]
-    openocd_config_path = "dm_debug.cfg"
-    timeout_sec = 180
+    openocd_config_path = "DM.cfg"
+    timeout_sec = 2000
 
+    # def create(self):
+    #      return testlib.Openocd(server_cmd=f"openocd  -f {self.openocd_config_path}")
     def create(self):
-         return testlib.Openocd(server_cmd=f"openocd  -f {self.openocd_config_path}")
+        #  return testlib.Openocd(server_cmd= f"openocd  -f {self.openocd_config_path}")
+        return testlib.Openocd(server_cmd=None, config=self.openocd_config_path, debug=False, timeout=100,
+                 freertos=False, debug_openocd=False)
+
     # #     return testlib.Openocd(server_cmd=(
     # #     "openocd --command 'gdb_port 0; tcl_port 0; telnet_port disabled'"
     # #     f" -f {self.openocd_config_path}"

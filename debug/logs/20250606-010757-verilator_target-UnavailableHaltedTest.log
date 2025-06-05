@@ -1,0 +1,6 @@
+Test: UnavailableHaltedTest
+Target: verilator_target
+Result: not_applicable
+Logfile: logs/20250606-010757-verilator_target-UnavailableHaltedTest.log
+Reproduce: ./gdbserver.py targets/RISC-V/verilator_target.py UnavailableHaltedTest
+Time elapsed: 0.00s

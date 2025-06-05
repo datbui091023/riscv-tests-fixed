@@ -1,0 +1,55 @@
+Test: HwbpManual
+Target: verilator_target
+---------------------------------[ Compile ]----------------------------------
++ riscv64-unknown-elf-gcc -g programs/debug.c programs/checksum.c programs/tiny-malloc.c -DDEFINE_MALLOC -DDEFINE_FREE -DCLINT=33554432 programs/entry.S programs/init.c -DNHARTS=1 -I ../env -T targets/RISC-V/spike32.lds -nostartfiles -mcmodel=medany -DXLEN=32 -o verilator_target_debug-40001104 -march=rv32imac -mabi=ilp32
+ programs/entry.S: Assembler messages:
+programs/entry.S:30: Error: unrecognized opcode `csrw mtvec,t0', extension `zicsr' required
+programs/entry.S:31: Error: unrecognized opcode `csrwi mstatus,0', extension `zicsr' required
+programs/entry.S:35: Error: unrecognized opcode `csrr t1,misa', extension `zicsr' required
+programs/entry.S:46: Error: unrecognized opcode `csrwi mideleg,0', extension `zicsr' required
+programs/entry.S:47: Error: unrecognized opcode `csrwi medeleg,0', extension `zicsr' required
+programs/entry.S:49: Error: unrecognized opcode `csrwi mie,0', extension `zicsr' required
+programs/entry.S:52: Error: unrecognized opcode `csrw mtvec,t0', extension `zicsr' required
+programs/entry.S:53: Error: unrecognized opcode `csrwi mstatus,0', extension `zicsr' required
+programs/entry.S:66: Error: unrecognized opcode `csrr t0,0xf14', extension `zicsr' required
+programs/entry.S:76: Error: unrecognized opcode `csrrw t2,mtvec,t2', extension `zicsr' required
+programs/entry.S:81: Error: unrecognized opcode `csrw 0x7a0,t0', extension `zicsr' required
+programs/entry.S:82: Error: unrecognized opcode `csrw 0x7a1,zero', extension `zicsr' required
+programs/entry.S:83: Error: unrecognized opcode `csrr t1,0x7a0', extension `zicsr' required
+programs/entry.S:88: Error: unrecognized opcode `csrw mtvec,t2', extension `zicsr' required
+programs/entry.S:89: Error: unrecognized opcode `csrwi mstatus,0', extension `zicsr' required
+programs/entry.S:158: Error: unrecognized opcode `csrr a0,mcause', extension `zicsr' required
+programs/entry.S:159: Error: unrecognized opcode `csrr a1,mepc', extension `zicsr' required
+programs/entry.S:162: Error: unrecognized opcode `csrw mepc,a0', extension `zicsr' required
+programs/entry.S:166: Error: unrecognized opcode `csrs mstatus,t0', extension `zicsr' required
+programs/init.c: Assembler messages:
+programs/init.c:10: Error: unrecognized opcode `csrr a5,mhartid', extension `zicsr' required
+programs/init.c:16: Error: unrecognized opcode `csrrs a5,mie,a5', extension `zicsr' required
+programs/init.c:17: Error: unrecognized opcode `csrrs a5,mstatus,8', extension `zicsr' required
+programs/init.c:22: Error: unrecognized opcode `csrr a5,mhartid', extension `zicsr' required
+ ------------------------------------------------------------------------------
+--------------------------------[ Traceback ]---------------------------------
+Traceback (most recent call last):
+  File "/home/dat-bui/riscv-tests/debug/testlib.py", line 1458, in run
+    self.classSetup()
+  File "/home/dat-bui/riscv-tests/debug/testlib.py", line 1620, in classSetup
+    GdbTest.classSetup(self)
+  File "/home/dat-bui/riscv-tests/debug/testlib.py", line 1514, in classSetup
+    BaseTest.classSetup(self)
+  File "/home/dat-bui/riscv-tests/debug/testlib.py", line 1420, in classSetup
+    self.compile()
+  File "/home/dat-bui/riscv-tests/debug/testlib.py", line 1416, in compile
+    self.target.compile(hart, *compile_args)
+  File "/home/dat-bui/riscv-tests/debug/targets.py", line 242, in compile
+    return self.do_compile(hart, *sources)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dat-bui/riscv-tests/debug/targets.py", line 236, in do_compile
+    testlib.compile(args)
+  File "/home/dat-bui/riscv-tests/debug/testlib.py", line 63, in compile
+    raise CompileError(stdout, stderr)
+testlib.CompileError
+-------------------------------[ End of logs ]--------------------------------
+Result: exception
+Logfile: logs/20250606-010754-verilator_target-HwbpManual.log
+Reproduce: ./gdbserver.py targets/RISC-V/verilator_target.py HwbpManual
+Time elapsed: 0.14s

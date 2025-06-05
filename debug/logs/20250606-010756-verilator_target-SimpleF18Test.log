@@ -1,0 +1,35 @@
+Test: SimpleF18Test
+Target: verilator_target
+-----------------------------[ openocd_log.log ]------------------------------
+Info : auto-selecting first available session transport "jtag". To override use 'transport select <transport>'.
+Info : Initializing remote_bitbang driver
+Info : Connecting to localhost:9999
+Error: Error on socket 'Failed to connect': errno==9, message: Bad file descriptor.
+
+
+--------------------------------[ Traceback ]---------------------------------
+Traceback (most recent call last):
+  File "/home/dat-bui/riscv-tests/debug/testlib.py", line 1458, in run
+    self.classSetup()
+  File "/home/dat-bui/riscv-tests/debug/testlib.py", line 1514, in classSetup
+    BaseTest.classSetup(self)
+  File "/home/dat-bui/riscv-tests/debug/testlib.py", line 1421, in classSetup
+    self.target_process = self.target.create()
+                          ^^^^^^^^^^^^^^^^^^^^
+  File "/home/dat-bui/riscv-tests/debug/targets/RISC-V/verilator_target.py", line 24, in create
+    return testlib.Openocd(server_cmd=None, config=self.openocd_config_path, debug=False, timeout=100,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dat-bui/riscv-tests/debug/testlib.py", line 383, in __init__
+    self.start(cmd, extra_env)                                         #FIX HERE
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dat-bui/riscv-tests/debug/testlib.py", line 418, in start
+    m = self.expect(
+        ^^^^^^^^^^^^
+  File "/home/dat-bui/riscv-tests/debug/testlib.py", line 519, in expect
+    raise TestLibError("OpenOCD exited early.")
+testlib.TestLibError: OpenOCD exited early.
+-------------------------------[ End of logs ]--------------------------------
+Result: exception
+Logfile: logs/20250606-010756-verilator_target-SimpleF18Test.log
+Reproduce: ./gdbserver.py targets/RISC-V/verilator_target.py SimpleF18Test
+Time elapsed: 0.10s

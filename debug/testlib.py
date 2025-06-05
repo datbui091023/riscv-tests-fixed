@@ -16,7 +16,7 @@ import tty
 import pexpect
 import yaml
 
-print_log_names = False
+print_log_names = True
 real_stdout = sys.stdout
 
 # Note that gdb comes with its own testsuite. I was unable to figure out how to
@@ -241,71 +241,72 @@ class MultiSpike:
             except OSError:
                 pass
 
-class VcsSim:
-    # pylint: disable-next=consider-using-with
-    logfile = tempfile.NamedTemporaryFile(prefix='simv', suffix='.log')
-    logname = logfile.name
-    lognames = [logname]
+# class VcsSim:
+#     # pylint: disable-next=consider-using-with
+#     logfile = tempfile.NamedTemporaryFile(prefix='simv', suffix='.log')
+#     logname = logfile.name
+#     lognames = [logname]
 
-    def __init__(self, sim_cmd=None, debug=False, timeout=300):
-        if sim_cmd:
-            cmd = shlex.split(sim_cmd)
-        else:
-            cmd = ["simv"]
-        cmd += ["+jtag_vpi_enable"]
-        if debug:
-            cmd[0] = cmd[0] + "-debug"
-            cmd += ["+vcdplusfile=output/gdbserver.vpd"]
+#     def __init__(self, sim_cmd=None, debug=False, timeout=300):
+#         if sim_cmd:
+#             cmd = shlex.split(sim_cmd)
+#         else:
+#             cmd = ["simv"]
+#         cmd += ["+jtag_vpi_enable"]
+#         if debug:
+#             cmd[0] = cmd[0] + "-debug"
+#             cmd += ["+vcdplusfile=output/gdbserver.vpd"]
 
-        # pylint: disable-next=consider-using-with
-        logfile = open(self.logname, "w", encoding='utf-8')
-        if print_log_names:
-            real_stdout.write(f"Temporary VCS log: {self.logname}\n")
-        logfile.write("+ " + " ".join(cmd) + "\n")
-        logfile.flush()
+#         # pylint: disable-next=consider-using-with
+#         logfile = open(self.logname, "w", encoding='utf-8')
+#         if print_log_names:
+#             real_stdout.write(f"Temporary VCS log: {self.logname}\n")
+#         logfile.write("+ " + " ".join(cmd) + "\n")
+#         logfile.flush()
 
-        with open(self.logname, "r", encoding='utf-8') as listenfile:
-            listenfile.seek(0, 2)
-            # pylint: disable-next=consider-using-with
-            self.process = subprocess.Popen(cmd, stdin=subprocess.PIPE,
-                    stdout=logfile, stderr=logfile)
-            done = False
-            start = time.time()
-            while not done:
-                # Fail if VCS exits early
-                exit_code = self.process.poll()
-                if exit_code is not None:
-                    raise RuntimeError(
-                        f'VCS simulator exited early with status {exit_code}')
+#         with open(self.logname, "r", encoding='utf-8') as listenfile:
+#             listenfile.seek(0, 2)
+#             # pylint: disable-next=consider-using-with
+#             self.process = subprocess.Popen(cmd, stdin=subprocess.PIPE,
+#                     stdout=logfile, stderr=logfile)
+#             done = False
+#             start = time.time()
+#             while not done:
+#                 # Fail if VCS exits early
+#                 exit_code = self.process.poll()
+#                 if exit_code is not None:
+#                     raise RuntimeError(
+#                         f'VCS simulator exited early with status {exit_code}')
 
-                line = listenfile.readline()
-                if not line:
-                    time.sleep(1)
-                match = re.match(r"^Listening on port (\d+)$", line)
-                if match:
-                    done = True
-                    self.port = int(match.group(1))
-                    os.environ['JTAG_VPI_PORT'] = str(self.port)
+#                 line = listenfile.readline()
+#                 if not line:
+#                     time.sleep(1)
+#                 match = re.match(r"^Listening on port (\d+)$", line)
+#                 if match:
+#                     done = True
+#                     self.port = int(match.group(1))
+#                     os.environ['JTAG_VPI_PORT'] = str(self.port)
 
-                if (time.time() - start) > timeout:
-                    raise TestLibError(
-                        "Timed out waiting for VCS to listen for JTAG vpi")
+#                 if (time.time() - start) > timeout:
+#                     raise TestLibError(
+#                         "Timed out waiting for VCS to listen for JTAG vpi")
 
-    def __del__(self):
-        try:
-            self.process.kill()
-            self.process.wait()
-        except OSError:
-            pass
+#     def __del__(self):
+#         try:
+#             self.process.kill()
+#             self.process.wait()
+#         except OSError:
+#             pass
 
 class Openocd:
     # pylint: disable=too-many-instance-attributes
     # pylint: disable-next=consider-using-with
     # pylint: disable=too-many-positional-arguments
     # pylint: disable=consider-using-with
-    logfile = tempfile.NamedTemporaryFile(prefix='openocd', suffix='.log')
-    logname = logfile.name
-
+    #FIX HERE
+    # logfile = tempfile.NamedTemporaryFile(prefix='openocd', suffix='.log')
+    #logfile = 
+    logname = "openocd_log.log"
     def __init__(self, server_cmd=None, config=None, debug=False, timeout=60,
                  freertos=False, debug_openocd=False):
         self.timeout = timeout
@@ -315,19 +316,18 @@ class Openocd:
         if server_cmd:
             cmd = shlex.split(server_cmd)
         else:
-            cmd = ["openocd"]
-
+            # cmd = ["stdbuf", "-oL", "-eL", "openocd"]                               #FIX HERE
+            cmd = ["openocd"] 
         # This command needs to come before any config scripts on the command
         # line, since they are executed in order.
-        # cmd += [
-        #     # Tell OpenOCD to bind gdb to an unused, ephemeral port.
-        #     "--command", "gdb_port 0",
-        #     # We create a socket for OpenOCD command line (TCL-RPC)
-        #     "--command", "tcl_port 0",
-        #     # don't use telnet
-        #     "--command", "telnet_port disabled",
-        #     #"--command", "init"
-        # ]
+        cmd += [
+            # Tell OpenOCD to bind gdb to an unused, ephemeral port.
+            "--command", "gdb port 3333",
+            # We create a socket for OpenOCD command line (TCL-RPC)
+            "--command", "tcl port 6666",
+            # don't use telnet
+            "--command", "telnet port disabled",
+        ]
 
         if config:
             self.config_file = find_file(config)
@@ -337,7 +337,7 @@ class Openocd:
 
             cmd += ["-f", self.config_file]
 
-       # cmd += ["-c", "echo \"Ready\""]    
+        # cmd += ["-c", "echo \"Ready\""]    
 
         if debug:
             cmd.append("-d")
@@ -349,19 +349,21 @@ class Openocd:
             extra_env['USE_FREERTOS'] = "0"
 
         # pylint: disable-next=consider-using-with
-        raw_logfile = open(Openocd.logname, "wb")
+        #raw_logfile = open(Openocd.logname, "wb")
+        # raw_logfile = open(Openocd.logname, "wb")                                       #FIX HERE
         # pylint: disable-next=consider-using-with
         self.read_log_fd = open(Openocd.logname, "rb")
         self.log_buf = b""
-        try:
-            # pylint: disable-next=consider-using-with
-            spike_dasm = subprocess.Popen("spike-dasm", stdin=subprocess.PIPE,
-                    stdout=raw_logfile, stderr=raw_logfile)
-            logfile = spike_dasm.stdin
-        except FileNotFoundError:
-            logfile = raw_logfile
+        # try:
+            # # pylint: disable-next=consider-using-with
+            # spike_dasm = subprocess.Popen("spike-dasm", stdin=subprocess.PIPE,
+            #         stdout=raw_logfile, stderr=raw_logfile)
+            # logfile = spike_dasm.stdin
+        # except FileNotFoundError:
+        # logfile = raw_logfile
         if print_log_names:
             real_stdout.write(f"Temporary OpenOCD log: {Openocd.logname}\n")
+
         env_entries = ("REMOTE_BITBANG_HOST", "REMOTE_BITBANG_PORT",
                 "WORK_AREA")
         env_entries = [key for key in env_entries if key in os.environ]
@@ -370,41 +372,56 @@ class Openocd:
             " ".join(f"{k}={v}" for k, v in extra_env.items()),
             " ".join(map(shlex.quote, cmd))
         ]
-        logfile.write(("+ " + " ".join(parts) + "\n").encode())
-        logfile.flush()
+        # logfile.write(("+ " + " ".join(parts) + "\n").encode())       #FIX HERE
+        # logfile.flush()
 
         self.gdb_ports = []
         self.tclrpc_port = None
-        self.start(cmd, logfile, extra_env)
+        # self.gdb_ports = 3333
+        # self.tclrpc_port = 6666
+        #self.start(cmd, logfile, extra_env)                                         #FIX HERE
+        self.start(cmd, extra_env)                                         #FIX HERE
 
-        self.openocd_cli = pexpect.spawn(f"nc localhost {self.tclrpc_port}",
-            echo=False)
-        # TCL-RPC uses \x1a as a watermark for end of message. We set raw
-        # pty mode to disable translation of \x1a to EOF
-        tty.setraw(self.openocd_cli.child_fd)
-        hello_string = self.command(
-            "capture { echo \"Hello TCL-RPC!\" }").decode()
-        if not "Hello TCL-RPC!" in hello_string:
-            raise RuntimeError(f"TCL-RPC - unexpected reply:\n{hello_string}")
+    # # Đợi TCL port sẵn sàng
+    #     self.wait_for_port(self.tclrpc_port)                                #FIX HERE
+
+
+    #     self.openocd_cli = pexpect.spawn(f"nc localhost {self.tclrpc_port}",
+    #         echo=False)
+    #     # TCL-RPC uses \x1a as a watermark for end of message. We set raw
+    #     # pty mode to disable translation of \x1a to EOF
+    #     tty.setraw(self.openocd_cli.child_fd)
+    #     hello_string = self.command(
+    #         "capture { echo \"Hello TCL-RPC!\" }").decode()
+    #     if not "Hello TCL-RPC!" in hello_string:
+    #         raise RuntimeError(f"TCL-RPC - unexpected reply:\n{hello_string}")
         
         self.lognames = [Openocd.logname] 
 
-    def start(self, cmd, logfile, extra_env):
+    #def start(self, cmd, logfile, extra_env):  
+    def start(self, cmd, extra_env):                           #FIX HERE
         combined_env = {**os.environ, **extra_env}
         # pylint: disable-next=consider-using-with
-        self.process = subprocess.Popen(cmd, stdin=None,
-                stdout=logfile, stderr=logfile, env=combined_env)
+
+        #FIX HERE
+        # self.process = subprocess.Popen(cmd, stdin=None,
+        #         stdout=logfile, stderr=logfile, env=combined_env)
+
+        self.process = subprocess.Popen(cmd, env=combined_env)
 
         try:
             # Wait for OpenOCD to have made it through riscv_examine(). When
             # using OpenOCD to communicate with a simulator this may take a
             # long time, and gdb will time out when trying to connect if we
             # attempt too early.
-            while True:
+            while True:                                            # FIX HERE
                 m = self.expect(
                         rb"Listening on port (?P<port>\d+) for "
                         rb"(?P<server>(?:gdb)|(?:tcl)) connections",
                         message="Waiting for OpenOCD to start up...")
+                # m = self.expect(
+                #         rb"Listening on port (?P<port>\d+) for (?P<server>(?:gdb)|(?:tcl)) connections", #\s+  #rb -> b
+                #         message="Waiting for OpenOCD to start up...")
                 if m["server"] == b"gdb":
                     self.gdb_ports.append(int(m["port"]))
                 elif m["server"] == b"tcl":
@@ -432,7 +449,17 @@ class Openocd:
         except Exception:
             print_log(Openocd.logname)
             raise
-
+    def wait_for_port(self, port, timeout=5):
+        import socket
+        start = time.time()
+        while time.time() - start < timeout:
+            try:
+                with socket.create_connection(("localhost", port), timeout=1):
+                    return True
+            except OSError:
+                time.sleep(0.1)
+        raise RuntimeError(f"TCL port {port} not available for connection.")
+    
     def __del__(self):
         try:
             self.process.terminate()
@@ -468,9 +495,10 @@ class Openocd:
         We read the logfile to tell us what OpenOCD has done."""
         messaged = False
         start = time.time()
-
+        #FIX HERE
         while True:
-            for line in self.read_log_fd.readlines():
+            #for line in self.read_log_fd.readlines():                                       #FIX HERE
+            for line in self.read_log_fd.readlines():                                       #FIX HERE
                 line = line.rstrip()
                 # Remove nulls, carriage returns, and newlines.
                 line = re.sub(rb"[\x00\r\n]+", b"", line)
@@ -499,7 +527,48 @@ class Openocd:
                                    f"{Openocd.logname}")
 
             time.sleep(0.1)
+    # def expect(self, regex, message=None):
+    # # """Wait for the regex to match the log, and return the match object. If
+    # # message is given, print it while waiting.
+    # # We read the logfile to tell us what OpenOCD has done."""
 
+    #     messaged = False
+    #     start = time.time()
+    #     while True:
+    #         data = self.read_log_fd.read()
+    #         if data:
+    #             # Cleanup: remove nulls, carriage returns, etc.
+    #             data = re.sub(rb"[\x00\r]+", b"", data)
+
+    #             # Filter out debug messages if needed
+    #             lines = data.split(b"\n")
+    #             for line in lines:
+    #                 debug_match = re.search(rb"Debug: \d+ \d+ .*", line)
+    #                 if debug_match:
+    #                     # Remove debug portion
+    #                     line = line[:debug_match.start()] + line[debug_match.end():]
+    #                 self.log_buf += line + b"\n"
+
+    #         # Try matching against the log buffer
+    #         m = re.search(regex, self.log_buf, re.MULTILINE | re.DOTALL)
+    #         if m:
+    #             self.log_buf = self.log_buf[m.end():]
+    #             return m
+
+    #         # If OpenOCD exited, raise error
+    #         if self.process.poll() is not None:
+    #             raise TestLibError("OpenOCD exited early.")
+
+    #         # Optional progress message
+    #         if message and not messaged and time.time() - start > 1:
+    #             messaged = True
+    #             print(message)
+
+    #         # Timeout
+    #         if (time.time() - start) > self.timeout:
+    #             raise TestLibError(f"Timed out waiting for {regex} in {Openocd.logname}")
+
+    #         time.sleep(0.1)
     def targets(self):
         """Run `targets` command."""
         result = self.command("targets").decode()

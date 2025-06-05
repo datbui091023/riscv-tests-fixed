@@ -1,0 +1,5 @@
+Info : auto-selecting first available session transport "jtag". To override use 'transport select <transport>'.
+Info : Initializing remote_bitbang driver
+Info : Connecting to localhost:9999
+Error: Error on socket 'Failed to connect': errno==9, message: Bad file descriptor.
+

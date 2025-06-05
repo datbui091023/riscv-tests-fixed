@@ -22,6 +22,6 @@ class spike64(targets.Target):
 
     def create(self):
         # # 32-bit FPRs only
-        return testlib.Spike(self, isa="RV64IMAC", progbufsize=2,
+        return testlib.Spike(self, isa="RV64IMAC", progbufsize=2, # RV64IMAC // fixed here
                 abstract_rti=30, support_abstract_csr=True,
                 support_abstract_fpr=True)

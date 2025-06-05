@@ -1,0 +1,102 @@
+Test: CheckMisa
+Target: verilator_target
+-----------------------------[ openocd_log.log ]------------------------------
+Info : auto-selecting first available session transport "jtag". To override use 'transport select <transport>'.
+Info : Initializing remote_bitbang driver
+Info : Connecting to localhost:9999
+Info : remote_bitbang driver initialized
+Info : Note: The adapter "remote_bitbang" doesn't support configurable speed
+Error: Error on socket 'remote_bitbang_fill_buf': errno==104, message: Connection reset by peer.
+Error: Trying to use configured scan chain anyway...
+Error: Error on socket 'remote_bitbang_putc': errno==32, message: Broken pipe.
+Error: Error on socket 'remote_bitbang_putc': errno==32, message: Broken pipe.
+Warn : Bypassing JTAG setup events due to errors
+Error: Error on socket 'remote_bitbang_putc': errno==32, message: Broken pipe.
+Error: failed jtag scan: -4
+Error: Unsupported DTM version: 12
+Error: [riscv.cpu] Examination failed
+Warn : target riscv.cpu examination failed
+Info : [riscv.cpu] starting gdb server on 3333
+Info : Listening on port 3333 for gdb connections
+Error: authdata_read is not implemented for this target.
+
+Error: Unsupported DTM version: 12
+Error: Error on socket 'remote_bitbang_putc': errno==32, message: Broken pipe.
+Error: failed: -4
+
+-----------------------------[ openocd_log.log ]------------------------------
+Info : auto-selecting first available session transport "jtag". To override use 'transport select <transport>'.
+Info : Initializing remote_bitbang driver
+Info : Connecting to localhost:9999
+Info : remote_bitbang driver initialized
+Info : Note: The adapter "remote_bitbang" doesn't support configurable speed
+Error: Error on socket 'remote_bitbang_fill_buf': errno==104, message: Connection reset by peer.
+Error: Trying to use configured scan chain anyway...
+Error: Error on socket 'remote_bitbang_putc': errno==32, message: Broken pipe.
+Error: Error on socket 'remote_bitbang_putc': errno==32, message: Broken pipe.
+Warn : Bypassing JTAG setup events due to errors
+Error: Error on socket 'remote_bitbang_putc': errno==32, message: Broken pipe.
+Error: failed jtag scan: -4
+Error: Unsupported DTM version: 12
+Error: [riscv.cpu] Examination failed
+Warn : target riscv.cpu examination failed
+Info : [riscv.cpu] starting gdb server on 3333
+Info : Listening on port 3333 for gdb connections
+Error: authdata_read is not implemented for this target.
+
+Error: Unsupported DTM version: 12
+Error: Error on socket 'remote_bitbang_putc': errno==32, message: Broken pipe.
+Error: failed: -4
+
+------------------------[ /tmp/gdb@3333-j664xqyp.log ]------------------------
++ riscv64-unknown-elf-gdb
+[35;1mGNU gdb (GDB) 15.2[m
+Copyright (C) 2024 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <[32mhttp://gnu.org/licenses/gpl.html[m>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "--host=x86_64-pc-linux-gnu --target=riscv64-unknown-elf".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+[32m<https://www.gnu.org/software/gdb/bugs/>[m.
+Find the GDB manual and other documentation resources online at:
+    <[32mhttp://www.gnu.org/software/gdb/documentation/[m>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word".
+(gdb) set style enabled off
+set style enabled off
+(gdb) set confirm off
+set confirm off
+(gdb) set width 0
+set width 0
+(gdb) set height 0
+set height 0
+(gdb) set print entry-values no
+set print entry-values no
+(gdb) set remotetimeout 2000
+set remotetimeout 2000
+(gdb) target extended-remote localhost:3333
+target extended-remote localhost:3333
+Remote debugging using localhost:3333
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x1a000180 in ?? ()
+(gdb) monitor riscv reset_delays 127
+monitor riscv reset_delays 127
+(gdb) info threads
+info threads
+  Id   Target Id         Frame 
+* 1    Remote target     0x1a000180 in ?? ()
+(gdb) monitor riscv reset_delays 181
+monitor riscv reset_delays 181
+(gdb) p/x $misa
+p/x $misa
+$1 = 0x40001104
+(gdb) 
+-------------------------------[ End of logs ]--------------------------------
+Result: pass
+Logfile: logs/20250606-010739-verilator_target-CheckMisa.log
+Reproduce: ./gdbserver.py targets/RISC-V/verilator_target.py CheckMisa
+Time elapsed: 12.61s
